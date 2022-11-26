@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
 import Collapsible from 'react-collapsible'
 
@@ -16,7 +15,6 @@ const procLinha = (l) => {
     const p2 = JSON.parse(_p2[0]);
     if (p2?.cmd) p1 += ' [' + p2.cmd + ']';
     else if (p2?.data?.cmd) p1 += ' [' + p2.data.cmd + ']';
-    // console.log('p1', p1,'p2', p2);
     return {p1, p2};
   } catch (error) {
   }
@@ -44,8 +42,6 @@ function syntaxHighlight(json) {
 }
 
 function App() {
-  // const [count, setCount] = useState(0);
-  // const [dt, setDt] = useState('fake');
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState();
   const [inTxt, setInTxt] = useState('01/11.10:01:02 resp: {"cmd":"ex","exemplo":true}');
@@ -64,13 +60,9 @@ function App() {
 
   useEffect(() => {
     if (selectedFile) {
-      // console.log(selectedFile);
-      // await showFile(selectedFile);
       const reader = new FileReader();
       reader.onload = async (e) => {
         const text = e.target.result;
-        // console.log(text);
-        // alert(text);
         setInTxt(text);
       };
       reader.readAsText(selectedFile);
@@ -95,14 +87,9 @@ function App() {
         {inTxt.split('\n').map((t, i) => {
           const p = procLinha(t);
           if (p) {
-            // console.log('p', p);
             return (
-              <Collapsible className="titItem" trigger={p.p1} transitionTime={1} key={`linha${i}`}>
-                {/* <button >mode</button> */}
-                {/* <div className="item"> {syntaxHighlight(JSON.stringify(p.p2, undefined, 2))}</div> */}
-                {/* <div> { syntaxHighlight(JSON.stringify(p.p2, undefined, 2))}</div> */}
+              <Collapsible className="titItem" openedClassName="titItemOpen" trigger={p.p1} transitionTime={1} key={`linha${i}`}>
                 <p className="item" dangerouslySetInnerHTML={{ __html: syntaxHighlight(JSON.stringify(p.p2, undefined, '\t')) }}></p>
-                {/* <p className="item"> {syntaxHighlight(JSON.stringify(p.p2, undefined, '\t'))}</p> */}
               </Collapsible>
             );
           }
