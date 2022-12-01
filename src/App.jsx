@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import Item from './Item';
 import Collapsible from 'react-collapsible'
 
 const procLinha = (l) => {
@@ -13,8 +14,12 @@ const procLinha = (l) => {
   try {
     let p1 = _p1[0];
     const p2 = JSON.parse(_p2[0]);
-    if (p2?.cmd) p1 += ' [' + p2.cmd + ']';
-    else if (p2?.data?.cmd) p1 += ' [' + p2.data.cmd + ']';
+    p1 += ' [';
+    if (p2?.req) p1 += ' req:' + p2.req;
+    if (p2?.cmd) p1 += ' cmd:' + p2.cmd;
+    else if (p2?.data?.cmd) p1 += ' cmd:' + p2.data.cmd;
+    p1 += ']';
+    
     return {p1, p2};
   } catch (error) {
   }
@@ -44,12 +49,12 @@ function syntaxHighlight(json) {
 function App() {
   const inputFile = useRef(null);
   const [selectedFile, setSelectedFile] = useState();
-  const [inTxt, setInTxt] = useState('01/11.10:01:02 resp: {"cmd":"ex","exemplo":true}');
+  // const [inTxt, setInTxt] = useState('01/11.10:01:02 resp: {"cmd":"ex1","exemplo1":true}\n01/11.10:01:02 resp: {"cmd":"ex2","exemplo2":true}');
+  const [inTxt, setInTxt] = useState('01/11.10:01:02 resp: {"cmd":"ex1","exemplo1":true}');
 
   const onButtonClick = () => {
     // `current` points to the mounted file input element
    inputFile.current.click();
-
   };
 
   const handleChange = (event) => {
@@ -85,19 +90,42 @@ function App() {
       </div>
       <div className="datalist">
         {inTxt.split('\n').map((t, i) => {
-          const p = procLinha(t);
-          if (p) {
-            return (
-              <Collapsible className="titItem" openedClassName="titItemOpen" trigger={p.p1} transitionTime={1} key={`linha${i}`}>
-                <p className="item" dangerouslySetInnerHTML={{ __html: syntaxHighlight(JSON.stringify(p.p2, undefined, '\t')) }}></p>
-              </Collapsible>
-            );
-          }
-          return (
-            <Collapsible trigger={`Linha ${i} com erro`} key={`linha${i}`}>
-              <div className="item"> {t}</div>
-            </Collapsible>
-          );
+          return <Item text={t} idx={i} key={i} />
+          // return Item(t, i);
+          // const p = procLinha(t);
+          // if (p) {
+          //   return (
+          //     <Collapsible
+          //       className="titItem"
+          //       openedClassName="titItemOpen"
+          //       trigger={p.p1}
+          //       transitionTime={1}
+          //       key={`linha${i}`}
+          //     >
+          //       <div>
+          //         <input type="checkbox" name="expand" id={`ck${i}`} checked/>
+          //         <label htmlFor="expand"> Expand</label>
+          //       </div>
+          //       <p
+          //         className="item"
+          //         dangerouslySetInnerHTML={{
+          //           __html: syntaxHighlight(JSON.stringify(p.p2, undefined, '\t')),
+          //         }}
+          //       ></p>
+          //     </Collapsible>
+          //   );
+          // }
+          // return (
+          //   <Collapsible
+          //     className="titItemErr"
+          //     openedClassName="titItemErr"
+          //     trigger={`Linha ${i} com erro`}
+          //     transitionTime={1}
+          //     key={`linha${i}`}
+          //   >
+          //     <div className="item"> {t}</div>
+          //   </Collapsible>
+          // );
         })}
       </div>
     </div>
