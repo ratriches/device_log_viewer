@@ -1,22 +1,22 @@
 {
-  "name": "testevite",
+  "name": "device_log_viewer",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "serve": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.3.0",
+    "@mui/material": "^5.0.0",
+    "@mui/icons-material": "^5.0.0",
     "react": "^18.2.0",
-    "react-collapsible": "^2.10.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
-    "@vitejs/plugin-react": "^2.2.0",
-    "vite": "^3.2.3"
+    "@vitejs/plugin-react": "^3.0.0",
+    "vite": "^4.0.1"
   }
 }
