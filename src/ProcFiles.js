@@ -39,9 +39,20 @@ export default async function ProcFiles(fileList) {
   const dataF = [];
   for (let f = 0; f < fileList.length; f++) {
     const data = await ReadFile(fileList[f]);
+    // console.log('file', fileList[f]);
+    if (!data) {
+      alert(`Não foi possivel ler o arquivo "${fileList[f].name}"`);
+      continue;
+    }
+
     const pdata = ProcFileData(data);
     // console.log('pdata', pdata);
-    dataF.push({ pdata, fname: fileList[f].name });
+    if (!pdata.length) {
+      alert(`Arquivo "${fileList[f].name}" inválido`);
+      continue;
+    }
+
+    dataF.push({ pdata, fname: fileList[f].name });    
   }
   return dataF;
 }

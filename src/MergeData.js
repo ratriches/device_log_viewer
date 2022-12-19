@@ -1,4 +1,21 @@
 export default async function MergeData(data) {
+  // console.log('MergeData', data);
+
+  if (
+    !data
+    || data.length < 1
+    // || !data.pdata
+    || !data[0].pdata
+    || data[0].pdata.length < 1
+    || !data[0].pdata[0].fts
+    || !data[0].pdata[0].type
+    || !data[0].pdata[0].date
+    || !data[0].pdata[0].ldata
+    // || !data[0].pdata[0]?.ln
+  ) {
+    return null;
+  }
+
   const dout = { fname: [], data: [] };
   const cntf = data.length;
   const counts = { max: 0, tot: [], lts: data[0].pdata[0].fts, its: [], idx: [] };

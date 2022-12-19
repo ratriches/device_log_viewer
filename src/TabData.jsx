@@ -15,8 +15,6 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import './Item.css'
-import { maxWidth } from '@mui/system';
-
 
 
 function syntaxHighlight(json, exp = false) {
@@ -103,8 +101,9 @@ export default function TabData(props) {
   const { data } = props;
 
   // console.log('TabData', data);
-  if (!data?.data || data.data.length <= 0) return null;
-  if (!data?.fname || data.fname.length <= 0) return null;
+  if (!data?.data || data.data.length <= 0 || !data?.fname || data.fname.length <= 0) {
+    return <p>Erro processando dados</p>;
+  }
   return (
     <TableContainer component={Paper} /* sx={{ maxHeight: 440 }} */>
       <Table stickyHeader aria-label="collapsible table">

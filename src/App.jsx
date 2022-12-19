@@ -8,16 +8,30 @@ import MergeData from './MergeData';
 
 export default function App() {
   const inputFile = useRef(null);
-  const [mdata, setMdata] = useState({});
+  const [mdata, setMdata] = useState(null);
+  const [msg, setMsg] = useState('Selecione um ou mais arquivos');
   
   const onButtonClick = () => {
-   inputFile.current.click();
+    inputFile.current.click();
   };
 
   const handleChange = async (event) => {
+    setMsg('Aguarde, processando');
+    setMdata(null);
     const pdata = await ProcFiles(event.target.files);
     // console.log('ProcFiles', pdata);
-    setMdata(await MergeData(pdata));
+    if (!pdata) {
+      setMsg('Arquivo(s) inválido(s)');
+      return;
+    }
+
+    const m = await MergeData(pdata);
+    if (m) {
+      setMdata(m);
+      setMsg('Processado');
+    } else {
+      setMsg('Erro processando arquivo(s)');
+    }
   };
 
   return (
@@ -32,8 +46,9 @@ export default function App() {
           onChange={handleChange}
         />
         <button onClick={onButtonClick}>Open Log files</button>
+        <span>&emsp;Status:&ensp;{msg}</span>
       </Box>
-      <TabData data={mdata} />
+      {mdata ? <TabData data={mdata} /> : null}
     </Container>
   );
 }
